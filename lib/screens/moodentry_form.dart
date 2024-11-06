@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 // TODO: Impor drawer yang sudah dibuat sebelumnya
+import 'package:mental_health_tracker/widgets/left_drawer.dart';
 
 class MoodEntryFormPage extends StatefulWidget {
   const MoodEntryFormPage({super.key});
@@ -27,12 +28,36 @@ class _MoodEntryFormPageState extends State<MoodEntryFormPage> {
         foregroundColor: Colors.white,
       ),
       // TODO: Tambahkan drawer yang sudah dibuat di sini
+      drawer: const LeftDrawer(),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Mood",
+                    labelText: "Mood",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _mood = value!;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Mood tidak boleh kosong!";
+                    }
+                    return null;
+                  },
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -88,10 +113,10 @@ class _MoodEntryFormPageState extends State<MoodEntryFormPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(
+                      backgroundColor: MaterialStateProperty.all(
                           Theme.of(context).colorScheme.primary),
                     ),
-                  onPressed: () {
+                    onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         showDialog(
                           context: context,
@@ -104,6 +129,8 @@ class _MoodEntryFormPageState extends State<MoodEntryFormPage> {
                                   children: [
                                     Text('Mood: $_mood'),
                                     // TODO: Munculkan value-value lainnya
+                                    Text("Feelings: $_feelings"),
+                                    Text("Mood Intensity: $_moodIntensity")
                                   ],
                                 ),
                               ),
@@ -129,8 +156,8 @@ class _MoodEntryFormPageState extends State<MoodEntryFormPage> {
                 ),
               ),
             ],
-          )
-        )
+          ),
+        ),
       ),
     );
   }
